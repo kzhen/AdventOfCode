@@ -23,7 +23,7 @@ namespace Runner._2021
         private IEnumerable<string> ReadInput(bool useSampleData)
         {
             var fileName = (useSampleData) ? $"Day{Day}-sample" : $"Day{Day}";
-            string filePath = $"./input/{Year}/{fileName}.csv";
+            string filePath = $"./input/{Year}/{fileName}.txt";
 
             var input = File.ReadAllLines(filePath);
 
