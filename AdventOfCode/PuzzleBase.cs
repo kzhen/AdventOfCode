@@ -33,14 +33,14 @@ namespace Runner._2021
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void TestProblem1(bool useSampleData)
+        public void TestProblem1(bool isSampleData)
         {
-            var input = ReadInput(useSampleData);
+            var input = ReadInput(isSampleData);
             var parsed = ParseInput(input);
 
             var solution = SolveProblem1(parsed);
 
-            if (useSampleData)
+            if (isSampleData)
             {
                 Assert.Equal(SampleProblemSolutionOne, solution);
             }
@@ -53,14 +53,14 @@ namespace Runner._2021
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void TestProblem2(bool useSampleData)
+        public void TestProblem2(bool isSampleData)
         {
-            var input = ReadInput(useSampleData);
-            var parsed = ParseInput(input);
+            var input = ReadInput(isSampleData);
+            var parsed = ParseInputForSecondProblem(input);
 
             var solution = SolveProblem2(parsed);
 
-            if (useSampleData)
+            if (isSampleData)
             {
                 Assert.Equal(SampleProblemSolutionTwo, solution);
             }
@@ -75,5 +75,9 @@ namespace Runner._2021
         public abstract string SolveProblem2(T input);
 
         public abstract T ParseInput(IEnumerable<string> input);
+        protected virtual T ParseInputForSecondProblem(IEnumerable<string> input)
+        {
+            return ParseInput(input);
+        }
     }
 }
