@@ -5,7 +5,7 @@ namespace Runner._2021
 {
     public class Day2 : PuzzleBase<IEnumerable<string>>
     {
-        public Day2() : base(2, "150", "900")
+        public Day2() : base(2, 2021, "150", "900")
         {
 
         }
