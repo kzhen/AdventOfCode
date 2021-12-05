@@ -1,5 +1,4 @@
 ﻿using AdventOfCode.Helpers;
-using Runner._2021;
 using System;
 using System.Collections.Generic;
 using System.Linq;

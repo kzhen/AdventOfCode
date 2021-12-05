@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Xunit;
 
-namespace Runner._2021
+namespace AdventOfCode
 {
     public abstract class PuzzleBase<T>
     {

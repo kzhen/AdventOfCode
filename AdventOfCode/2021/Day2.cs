@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Runner._2021
+namespace AdventOfCode._2021
 {
     public class Day2 : PuzzleBase<IEnumerable<string>>
     {

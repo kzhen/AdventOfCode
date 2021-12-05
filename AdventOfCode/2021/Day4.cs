@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using TBC = Runner._2021.BingoGame;
+using TBC = AdventOfCode._2021.BingoGame;
 
-namespace Runner._2021
+namespace AdventOfCode._2021
 {
     public class BingoGame
     {
