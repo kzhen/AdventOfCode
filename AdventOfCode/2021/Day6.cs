@@ -1,12 +1,8 @@
 ﻿using AdventOfCode.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
-//using TBC = System.Collections.Generic.Dictionary<int, int>;
 using TBC = System.Collections.Generic.Dictionary<int, System.Numerics.BigInteger>;
 
 namespace AdventOfCode._2021
@@ -20,25 +16,21 @@ namespace AdventOfCode._2021
         {
             return input.First().Split(",")
                 .GroupBy(l => l)
-                //.ToDictionary(key => int.Parse(key.Key), val => val.Count())
-                .ToDictionary(key => int.Parse(key.Key), val => new BigInteger(val.Count()))
-                //.Select(m => new LanternFish { InternalTimer = int.Parse(m) })
-                //.ToDictionary(m => m.InternalTimer, k => k)
-                ;
+                .ToDictionary(key => int.Parse(key.Key), val => new BigInteger(val.Count()));
         }
 
         public override string SolveProblem1(TBC input)
         {
-            int maxDays = 80;
-            BigInteger result = CalculateNumberOfFishAfterXDays(ref input, maxDays);
+            int daysToSimulate = 80;
+            BigInteger result = CalculateNumberOfFishAfterXDays(ref input, daysToSimulate);
 
             return result.ToString();
         }
 
         public override string SolveProblem2(TBC input)
         {
-            int maxDays = 256;
-            BigInteger result = CalculateNumberOfFishAfterXDays(ref input, maxDays);
+            int daysToSimulate = 256;
+            BigInteger result = CalculateNumberOfFishAfterXDays(ref input, daysToSimulate);
 
             return result.ToString();
         }
@@ -48,7 +40,7 @@ namespace AdventOfCode._2021
             int daysRun = 0;
             do
             {
-                var nextDay = new Dictionary<int, BigInteger>();
+                var nextDay = new TBC();
                 var keys = input.Keys;
 
                 //key is the number of days remaining until respawn
@@ -57,32 +49,23 @@ namespace AdventOfCode._2021
                 {
                     if (key != 0)
                     {
-                        var currentvalue = nextDay.GetKeyVauleOrSetDefaultValue(key - 1, 0);
+                        nextDay.GetKeyVauleOrSetDefaultValue(key - 1, 0);
                         nextDay[key - 1] += input[key];
                     }
                     else
                     {
-                        var currentvalue = nextDay.GetKeyVauleOrSetDefaultValue(8, 0);
+                        nextDay.GetKeyVauleOrSetDefaultValue(8, 0);
                         nextDay[8] += input[key];
 
-                        var currentvalue2 = nextDay.GetKeyVauleOrSetDefaultValue(6, 0);
+                        nextDay.GetKeyVauleOrSetDefaultValue(6, 0);
                         nextDay[6] += input[key];
                     }
                 }
 
                 input = nextDay;
+            } while (++daysRun < maxDays);
 
-                daysRun++;
-            } while (daysRun < maxDays);
-
-            BigInteger result = 0;
-
-            foreach (var item in input)
-            {
-                result = BigInteger.Add(result, item.Value);
-            }
-
-            
+            var result = input.Select(kvp => kvp.Value).SumBigInteger();
 
             return result;
         }

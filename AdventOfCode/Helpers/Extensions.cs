@@ -19,6 +19,17 @@ namespace AdventOfCode.Helpers
             return dictionary[key];
         }
 
+        public static BigInteger SumBigInteger(this IEnumerable<BigInteger> bigInts)
+        {
+            var runningValue = new BigInteger(0);
+            foreach (var item in bigInts)
+            {
+                runningValue = BigInteger.Add(runningValue, item);
+            }
+
+            return runningValue;
+        }
+
         public static void PrintGrid(this Dictionary<Position, int> grid, string blankOrZeroChar = "-0-")
         {
 
