@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,16 @@ namespace AdventOfCode.Helpers
 {
     public static class Extensions
     {
+        public static TValue GetKeyVauleOrSetDefaultValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+        {
+            if (!dictionary.ContainsKey(key))
+            {
+                dictionary[key] = defaultValue;
+            }
+
+            return dictionary[key];
+        }
+
         public static void PrintGrid(this Dictionary<Position, int> grid, string blankOrZeroChar = "-0-")
         {
 
