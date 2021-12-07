@@ -159,11 +159,6 @@ namespace AdventOfCode._2021
 
             var sum = grid.Where(kvp => kvp.Value > 1).Count();
 
-
-
-            Console.Clear();
-
-
             return sum.ToString();
         }
 
