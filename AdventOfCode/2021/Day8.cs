@@ -55,12 +55,17 @@ namespace AdventOfCode._2021
             foreach (var line in input)
             {
                 var map = GetMappingDigit(line.SignalPattersn);
+
                 for (int i = 0; i < 4; i++)
                 {
                     var display = line.OutputValues[i];
                     var a = map.Single(m => m.Value.Length == display.Length && 
                             m.Value.ToArray().Intersect(display.ToArray()).Count() == display.Length).Key;
 
+                    //1000
+                    //100
+                    //10
+                    //1
                     result += (i == 0) ? a * 1000 : (i == 1) ? a * 100 : (i == 2) ? a * 10 : a;
 
                 }
@@ -73,24 +78,24 @@ namespace AdventOfCode._2021
         private Dictionary<int, string> GetMappingDigit(List<string> outputValues)
         {
             Dictionary<int, string> map = new Dictionary<int, string>();
-            map[1] = outputValues.First(m => m.Length == 2); //one
-            map[4] = outputValues.First(m => m.Length == 4); //four
-            map[7] = outputValues.First(m => m.Length == 3); //seven
-            map[8] = outputValues.First(m => m.Length == 7); //eight
+            map[1] = outputValues.Single(m => m.Length == 2); //one
+            map[4] = outputValues.Single(m => m.Length == 4); //four
+            map[7] = outputValues.Single(m => m.Length == 3); //seven
+            map[8] = outputValues.Single(m => m.Length == 7); //eight
 
             outputValues.Remove(map[1]);
             outputValues.Remove(map[4]);
             outputValues.Remove(map[7]);
             outputValues.Remove(map[8]);
 
-            var three = outputValues.Where(m => m.Length == 5).Single(m => m.ToArray().Intersect(map[1].ToArray()).Count() == 2); //five
+            var three = outputValues.Single(m => m.Length == 5 && m.ToArray().Intersect(map[1].ToArray()).Count() == 2); //five
             map[3] = three;
             outputValues.Remove(map[3]);
 
-            var five = outputValues.Where(m => m.Length == 5).Single(m => m.ToArray().Intersect(map[4].ToArray()).Count() == 3); //five
+            var five = outputValues.Single(m => m.Length == 5 && m.ToArray().Intersect(map[4].ToArray()).Count() == 3); //five
             map[5] = five;
             outputValues.Remove(map[5]);
-            var two = outputValues.Where(m => m.Length == 5).Single(m => m.ToArray().Intersect(map[4].ToArray()).Count() == 2); //five
+            var two = outputValues.Single(m => m.Length == 5 && m.ToArray().Intersect(map[4].ToArray()).Count() == 2); //five
             map[2] = two;
             outputValues.Remove(map[2]);
 
