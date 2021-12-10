@@ -76,8 +76,6 @@ namespace AdventOfCode._2021
             var total = (topThree[0] * topThree[1] * topThree[2]);
 
             return total.ToString();
-
-            //return totalLowPoints.ToString();
         }
 
         private (int, List<Position<int>>) CalculateBasinSize(Position<int> startingPoint, TBC input)
