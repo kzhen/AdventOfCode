@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Xunit.Abstractions;
 
 namespace AdventOfCode._2021
 {
     public class Day3 : PuzzleBase<IEnumerable<char[]>>
     {
-        public Day3() : base(3, 2021, "198", "230") { }
+        public Day3(ITestOutputHelper output) : base(3, 2021, "198", "230", output) { }
 
         public override IEnumerable<char[]> ParseInput(IEnumerable<string> input)
         {

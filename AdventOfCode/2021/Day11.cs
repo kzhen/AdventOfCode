@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xunit.Abstractions;
 using TBC = System.Collections.Generic.Dictionary<AdventOfCode.Helpers.Position, int>;
 
 namespace AdventOfCode._2021
 {
     public class Day11 : PuzzleBase<TBC>
     {
-        public Day11() : base(11, 2021, "1656", "195") { }
+        public Day11(ITestOutputHelper output) : base(11, 2021, "1656", "195", output) { }
         public override TBC ParseInput(IEnumerable<string> input)
         {
             //return input.Select(int.Parse);
@@ -65,12 +65,6 @@ namespace AdventOfCode._2021
 
         private void IncrementAdjacent(TBC input, Position pos, List<Position> visited)
         {
-            int minX = 0;
-            int minY = 0;
-
-            int maxX = 9;
-            int maxY = 9;
-
             //right
             var right = input.FirstOrDefault(x => x.Key.x == pos.x + 1 && x.Key.y == pos.y && !visited.Contains(x.Key));
             if (right.Key != null)

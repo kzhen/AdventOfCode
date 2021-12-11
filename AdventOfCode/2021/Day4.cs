@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Xunit.Abstractions;
 using TBC = AdventOfCode._2021.BingoGame;
 
 namespace AdventOfCode._2021
@@ -23,7 +23,7 @@ namespace AdventOfCode._2021
 
     public class Day4 : PuzzleBase<TBC>
     {
-        public Day4() : base(4, 2021, "4512", "1924") { }
+        public Day4(ITestOutputHelper output) : base(4, 2021, "4512", "1924", output) { }
 
         public override TBC ParseInput(IEnumerable<string> input)
         {

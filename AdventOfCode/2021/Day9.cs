@@ -4,53 +4,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using TBC = System.Collections.Generic.IEnumerable<AdventOfCode.Helpers.Position<int>>;
+using Xunit.Abstractions;
+using TBC = System.Collections.Generic.Dictionary<AdventOfCode.Helpers.Position, int>;
 
 namespace AdventOfCode._2021
 {
     public class Day9 : PuzzleBase<TBC>
     {
-        public Day9() : base(9, 2021, "15", "1134") { }
+        public Day9(ITestOutputHelper output) : base(9, 2021, "15", "1134", output) { }
         public override TBC ParseInput(IEnumerable<string> input)
         {
-            var coll = new List<Position<int>>();
-            //return input.Select((line, idx) => new )
-            for (int y = 0; y < input.Count(); y++)
-            {
-                var line = input.Skip(y).First().ToArray();
-                coll.AddRange(line.Select((each, x) => new Position<int>(x, y, int.Parse(each.ToString()))));
-            }
+            var result = input.SelectMany((line, idx) =>
+                line.Select((col, colIdx) => new { pos = new Position(colIdx, idx), value = int.Parse(col.ToString()) }
+                )
 
-            return coll;
+            ).ToDictionary(k => k.pos, v => v.value);
+
+            return result;
         }
 
         public override string SolveProblem1(TBC input)
         {
             int totalLowPoints = 0;
 
-            int minX = 0;
-            int minY = 0;
-
-            int maxX = input.Max(i => i.x);
-            int maxY = input.Max(i => i.y);
-
 
             foreach (var point in input)
             {
-                var adjacentTop = input.FirstOrDefault(p => p.x == point.x && p.y == point.y - 1);
-                var adjacentBottom = input.FirstOrDefault(p => p.x == point.x && p.y == point.y + 1);
-                var adjacentLeft = input.FirstOrDefault(p => p.x == point.x - 1 && p.y == point.y);
-                var adjacentRight = input.FirstOrDefault(p => p.x == point.x + 1 && p.y == point.y);
+                var adjacentTop = input.FirstOrDefault(p => p.Key.x == point.Key.x && p.Key.y == point.Key.y - 1);
+                var adjacentBottom = input.FirstOrDefault(p => p.Key.x == point.Key.x && p.Key.y == point.Key.y + 1);
+                var adjacentLeft = input.FirstOrDefault(p => p.Key.x == point.Key.x - 1 && p.Key.y == point.Key.y);
+                var adjacentRight = input.FirstOrDefault(p => p.Key.x == point.Key.x + 1 && p.Key.y == point.Key.y);
 
 
                 if (
-                    (adjacentTop == null || point.valueAtPos < adjacentTop.valueAtPos) &&
-                    (adjacentBottom == null || point.valueAtPos < adjacentBottom.valueAtPos) &&
-                    (adjacentLeft == null || point.valueAtPos < adjacentLeft.valueAtPos) &&
-                    (adjacentRight == null || point.valueAtPos < adjacentRight.valueAtPos))
+                    (adjacentTop.Key == null || point.Value < adjacentTop.Value) &&
+                    (adjacentBottom.Key == null || point.Value < adjacentBottom.Value) &&
+                    (adjacentLeft.Key == null || point.Value < adjacentLeft.Value) &&
+                    (adjacentRight.Key == null || point.Value < adjacentRight.Value))
                 {
-                    totalLowPoints += (1 + point.valueAtPos);
+                    totalLowPoints += (1 + point.Value);
                 }
 
             }
@@ -61,12 +53,12 @@ namespace AdventOfCode._2021
 
         public override string SolveProblem2(TBC input)
         {
-            var pointsSerached = new List<Position<int>>();
+            var pointsSerached = new List<Position>();
             var basinSizes = new List<int>();
 
-            foreach (var point in input.Where(pos => pos.valueAtPos != 9 && !pointsSerached.Contains(pos)))
+            foreach (var point in input.Where(pos => pos.Value != 9 && !pointsSerached.Contains(pos.Key)))
             {
-                var size = CalculateBasinSize(point, input);
+                var size = CalculateBasinSize(point.Key, input);
                 pointsSerached.AddRange(size.Item2);
                 basinSizes.Add(size.Item1);
 
@@ -78,12 +70,12 @@ namespace AdventOfCode._2021
             return total.ToString();
         }
 
-        private (int, List<Position<int>>) CalculateBasinSize(Position<int> startingPoint, TBC input)
+        private (int, List<Position>) CalculateBasinSize(Position startingPoint, TBC input)
         {
             int totalBasinSize = 0; //starting at one
 
-            var pointsToSearch = new List<Position<int>>();
-            var pointsSearched = new List<Position<int>>();
+            var pointsToSearch = new List<Position>();
+            var pointsSearched = new List<Position>();
 
             pointsToSearch.Add(startingPoint);
 
@@ -94,26 +86,26 @@ namespace AdventOfCode._2021
                 if (pointsSearched.Contains(point)) { pointsToSearch.Remove(point); continue; }
                 pointsSearched.Add(point);
 
-                var adjacentTop = input.FirstOrDefault(p => p.x == point.x && p.y == point.y - 1 && p.valueAtPos != 9 && !pointsToSearch.Contains(p));
-                var adjacentBottom = input.FirstOrDefault(p => p.x == point.x && p.y == point.y + 1 && p.valueAtPos != 9 && !pointsToSearch.Contains(p));
-                var adjacentLeft = input.FirstOrDefault(p => p.x == point.x - 1 && p.y == point.y && p.valueAtPos != 9 && !pointsToSearch.Contains(p));
-                var adjacentRight = input.FirstOrDefault(p => p.x == point.x + 1 && p.y == point.y && p.valueAtPos != 9 && !pointsToSearch.Contains(p));
+                var adjacentTop = input.FirstOrDefault(p => p.Key.x == point.x && p.Key.y == point.y - 1 && p.Value != 9 && !pointsToSearch.Contains(p.Key));
+                var adjacentBottom = input.FirstOrDefault(p => p.Key.x == point.x && p.Key.y == point.y + 1 && p.Value != 9 && !pointsToSearch.Contains(p.Key));
+                var adjacentLeft = input.FirstOrDefault(p => p.Key.x == point.x - 1 && p.Key.y == point.y && p.Value != 9 && !pointsToSearch.Contains(p.Key));
+                var adjacentRight = input.FirstOrDefault(p => p.Key.x == point.x + 1 && p.Key.y == point.y && p.Value != 9 && !pointsToSearch.Contains(p.Key));
 
-                if (adjacentTop != null)
+                if (adjacentTop.Key != null)
                 {
-                    pointsToSearch.Add(adjacentTop);
+                    pointsToSearch.Add(adjacentTop.Key);
                 }
-                if (adjacentBottom != null)
+                if (adjacentBottom.Key != null)
                 {
-                    pointsToSearch.Add(adjacentBottom);
+                    pointsToSearch.Add(adjacentBottom.Key);
                 }
-                if (adjacentLeft != null)
+                if (adjacentLeft.Key != null)
                 {
-                    pointsToSearch.Add(adjacentLeft);
+                    pointsToSearch.Add(adjacentLeft.Key);
                 }
-                if (adjacentRight != null)
+                if (adjacentRight.Key != null)
                 {
-                    pointsToSearch.Add(adjacentRight);
+                    pointsToSearch.Add(adjacentRight.Key);
                 }
 
                 totalBasinSize++;

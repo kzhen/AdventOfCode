@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xunit.Abstractions;
 using TBC = System.Collections.Generic.IEnumerable<string>;
 
 namespace AdventOfCode._2021
@@ -33,7 +33,7 @@ namespace AdventOfCode._2021
         private char[] openers = new char[] { '(', '[', '{', '<' };
 
 
-        public Day10() : base(10, 2021, "26397", "288957") { }
+        public Day10(ITestOutputHelper output) : base(10, 2021, "26397", "288957", output) { }
 
         public override TBC ParseInput(IEnumerable<string> input)
         {

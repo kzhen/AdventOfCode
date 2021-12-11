@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-
+using Xunit.Abstractions;
 using TBC = System.Collections.Generic.Dictionary<int, System.Numerics.BigInteger>;
 
 namespace AdventOfCode._2021
@@ -10,7 +10,7 @@ namespace AdventOfCode._2021
 
     public class Day6 : PuzzleBase<TBC>
     {
-        public Day6() : base(6, 2021, "5934", "26984457539") { }
+        public Day6(ITestOutputHelper output) : base(6, 2021, "5934", "26984457539", output) { }
 
         public override TBC ParseInput(IEnumerable<string> input)
         {

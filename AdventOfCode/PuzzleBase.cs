@@ -2,23 +2,28 @@
 using System.Collections.Generic;
 using System.IO;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace AdventOfCode
 {
     public abstract class PuzzleBase<T>
     {
-        public PuzzleBase(int day, int year, string sampleProblemSolutionOne, string sampleProblemSolutionTwo)
+        private readonly ITestOutputHelper _outputHelper;
+
+        public PuzzleBase(int day, int year, string sampleProblemSolutionOne, string sampleProblemSolutionTwo, ITestOutputHelper outputHelper)
         {
             this.Day = day;
             this.Year = year;
             this.SampleProblemSolutionOne = sampleProblemSolutionOne;
             this.SampleProblemSolutionTwo = sampleProblemSolutionTwo;
+            _outputHelper = outputHelper;
         }
 
         public int Day { get; }
         public int Year { get; }
         public string SampleProblemSolutionOne { get; }
         public string SampleProblemSolutionTwo { get; }
+
 
         private IEnumerable<string> ReadInput(bool useSampleData)
         {
@@ -44,10 +49,8 @@ namespace AdventOfCode
             {
                 Assert.Equal(SampleProblemSolutionOne, solution);
             }
-            else
-            {
-                Console.WriteLine($"The solution is: {solution}");
-            }
+
+            _outputHelper.WriteLine($"The solution is: {solution}");
         }
 
         [Theory]
@@ -64,10 +67,8 @@ namespace AdventOfCode
             {
                 Assert.Equal(SampleProblemSolutionTwo, solution);
             }
-            else
-            {
-                Console.WriteLine($"The solution is: {solution}");
-            }
+
+            _outputHelper.WriteLine($"The solution is: {solution}");
         }
 
         public abstract string SolveProblem1(T input);

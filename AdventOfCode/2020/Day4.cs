@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace AdventOfCode._2020
 {
@@ -14,7 +15,7 @@ namespace AdventOfCode._2020
     public class Day4 : PuzzleBase<IEnumerable<PassportData>>
     {
         //note using updated sample data, which also includes some useful bits of the second problem
-        public Day4() : base(4, 2020, "8", "4") { }
+        public Day4(ITestOutputHelper output) : base(4, 2020, "8", "4", output) { }
         public override IEnumerable<PassportData> ParseInput(IEnumerable<string> input)
         {
             var passports = new List<PassportData>();

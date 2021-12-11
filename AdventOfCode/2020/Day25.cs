@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace AdventOfCode._2020
 {
     public class Day25 : PuzzleBase<long[]>
     {
-        public Day25() : base(25, 2020, "14897079", "")
+        public Day25(ITestOutputHelper output) : base(25, 2020, "14897079", "", output)
         {
 
         }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace AdventOfCode._2020
 {
@@ -12,7 +13,7 @@ namespace AdventOfCode._2020
         int rowsOnPlane = 128;
         int columnsOnPlane = 8;
 
-        public Day5() : base(5, 2020, "820", "") { }
+        public Day5(ITestOutputHelper output) : base(5, 2020, "820", "", output) { }
         public override IEnumerable<string> ParseInput(IEnumerable<string> input)
         {
             return input;

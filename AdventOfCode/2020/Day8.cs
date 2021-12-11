@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace AdventOfCode._2020
 {
     public record Instruction(string opCode, int val);
     public class Day8 : PuzzleBase<Dictionary<int, Instruction>>
     {
-        public Day8() : base(8, 2020, "5", "8")
+        public Day8(ITestOutputHelper output) : base(8, 2020, "5", "8", output)
         {
 
         }

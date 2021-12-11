@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xunit.Abstractions;
 using TBC = System.Collections.Generic.IEnumerable<AdventOfCode._2021.Vector>;
 
 namespace AdventOfCode._2021
@@ -20,7 +20,7 @@ namespace AdventOfCode._2021
             return new Position(xy[0], xy[1]);
         }
 
-        public Day5() : base(5, 2021, "5", "12") { }
+        public Day5(ITestOutputHelper output) : base(5, 2021, "5", "12", output) { }
         public override TBC ParseInput(IEnumerable<string> input)
         {
             var result = input.Select(line =>

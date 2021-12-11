@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xunit.Abstractions;
 using TBC = System.Collections.Generic.IEnumerable<int>;
 
 namespace AdventOfCode._2021
@@ -13,7 +13,7 @@ namespace AdventOfCode._2021
 
     public class Day7 : PuzzleBase<TBC>
     {
-        public Day7() : base(7, 2021, "37", "168")
+        public Day7(ITestOutputHelper output) : base(7, 2021, "37", "168", output)
         {
 
         }

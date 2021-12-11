@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace AdventOfCode._2020
 {
@@ -12,7 +13,7 @@ namespace AdventOfCode._2020
     {
         private const string TREE = "#";
 
-        public Day3() : base(3, 2020, "7", "336") { }
+        public Day3(ITestOutputHelper output) : base(3, 2020, "7", "336", output) { }
 
         public override IEnumerable<WrappingLine> ParseInput(IEnumerable<string> input)
         {

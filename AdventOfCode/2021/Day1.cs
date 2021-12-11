@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Xunit.Abstractions;
 
 namespace AdventOfCode._2021
 {
 
     public class Day1 : PuzzleBase<IEnumerable<int>>
     {
-        public Day1() : base(day: 1, 2021, sampleProblemSolutionOne: "7", sampleProblemSolutionTwo: "5") { }
+        public Day1(ITestOutputHelper output) : base(day: 1, 2021, "7", "5", output) { }
 
         public override IEnumerable<int> ParseInput(IEnumerable<string> input)
         {
