@@ -5,109 +5,96 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
-using TBC = AdventOfCode._2021.Graph;
+using TBC = System.Collections.Generic.IEnumerable<AdventOfCode._2021.GraphVector>;
 
 namespace AdventOfCode._2021
 {
-    public record Node(string name, int visited)
+    public record Node(string name, bool IsSmall)
     {
-        public bool IsSmall => name.ToLower().Equals(name);
         public bool IsStart => name.Equals("start");
         public bool IsEnd => name.Equals("end");
     }
 
-    public record GraphVector(Node a, Node b);
-
-    public record Graph(List<Node> Nodes, List<GraphVector> Vectors);
+    public record GraphVector(Node From, Node To);
 
     public class Day12 : PuzzleBase<TBC>
     {
-        public Day12(ITestOutputHelper outputHelper) : base(12, 2021, "10", "", outputHelper) { }
+        public Day12(ITestOutputHelper outputHelper) : base(12, 2021, "10", "36", outputHelper) { }
         public override TBC ParseInput(IEnumerable<string> input)
         {
-            var nodes = new List<Node>();
-            var vectors = new List<GraphVector>();
-
-            foreach (var line in input)
-            {
-                var split = line.Split("-");
-                var a = new Node(split[0], 0);
-                var b = new Node(split[1], 0);
-
-                nodes.Add(a);
-                nodes.Add(b);
-
-                vectors.Add(new GraphVector(a, b));
-            }
-
-            return new Graph(nodes.Distinct().ToList(), vectors);
-            //return input.Select(int.Parse);
+            return input.Select(l => l.Split("-")).Select(m => new GraphVector(new Node(m[0], m[0].ToLower().Equals(m[0])), new Node(m[1], m[1].ToLower().Equals(m[1]))));
         }
 
         public override string SolveProblem1(TBC input)
         {
-            int distinctPaths = 0;
+            var startingNode = new Node("start", true);
 
-            foreach (var startingNode in input.Nodes.Where(n => n.IsStart))
-            {
-                var visited = new LinkedList<Node>();
-                visited.AddFirst(startingNode);
-                dfs(input, visited);
-                //LinkedList<>
-                //var paths = dfs()
-            }
-
-
+            var visited = new LinkedList<Node>();
+            visited.AddFirst(startingNode);
+            var distinctPaths = Dfs(input, visited, 0, false);
+            
             return distinctPaths.ToString();
         }
 
-        private void dfs(TBC input, LinkedList<Node> visited)
+        private int Dfs(TBC input, LinkedList<Node> visited, int pathsToEndFoundSoFar, bool isPart2)
         {
-            var neighbours = GetNeighbours(input.Vectors, visited.Last());
+            var pathsToEnd = 0;
+            var neighbours = GetNeighbours(input, visited.Last());
 
             foreach (var node in neighbours)
             {
                 var hasBeenVisited = visited.Any(n => n == node && node.IsSmall);
-                var visits = visited.Count(n => n == node);
 
-                if (hasBeenVisited && visits == 2)
+                if (hasBeenVisited)
                 {
-                    OutputHelper.WriteLine(visits.ToString());
-                    continue;
+                    if (isPart2)
+                    {
+                        var anyVisitedTwice = visited.Where(m => m.IsSmall).GroupBy(m => m.name).Any(m => m.Count() == 2);
+
+                        if (anyVisitedTwice)
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
 
                 if (node.IsEnd)
                 {
-                    visited.AddLast(node);
-                    printPath(visited);
-                    visited.RemoveLast();
+                    pathsToEnd++;
+                    //printPath(visited, node);
                     continue;
                 }
 
                 visited.AddLast(node);
-                dfs(input, visited);
+                var pathsFound = Dfs(input, visited, pathsToEndFoundSoFar, isPart2);
+                pathsToEnd += pathsFound;
                 visited.RemoveLast();
             }
 
-            
+            return pathsToEndFoundSoFar + pathsToEnd;
         }
-        private void printPath(LinkedList<Node> visited)
+        private void printPath(LinkedList<Node> visited, Node lastVisited)
         {
+            visited.AddLast(lastVisited);
             StringBuilder cb = new StringBuilder();
             foreach (var node in visited)
             {
                 cb.Append(node.name + " ");
-
             }
             Console.WriteLine(cb.ToString());
+            visited.RemoveLast();
         }
 
-        private LinkedList<Node> GetNeighbours(List<GraphVector> vectors, Node node)
+        private LinkedList<Node> GetNeighbours(IEnumerable<GraphVector> vectors, Node node)
         {
             LinkedList<Node> neighbours = new LinkedList<Node>();
 
-            var v1 = vectors.Where(a => a.a == node && !a.b.IsStart).Select(v => v.b);
-            var v2 = vectors.Where(a => a.b == node && !a.a.IsStart).Select(v => v.a);
+            var v1 = vectors.Where(a => a.From == node && !a.To.IsStart).Select(v => v.To);
+            var v2 = vectors.Where(a => a.To == node && !a.From.IsStart).Select(v => v.From);
 
             foreach (var item in v1)
             {
@@ -122,12 +109,13 @@ namespace AdventOfCode._2021
             return neighbours;
         }
 
-        
-
         public override string SolveProblem2(TBC input)
         {
-            int distinctPaths = 0;
+            var startingNode = new Node("start", true);
 
+            var visited = new LinkedList<Node>();
+            visited.AddFirst(startingNode);
+            var distinctPaths = Dfs(input, visited, 0, true);
 
             return distinctPaths.ToString();
         }
