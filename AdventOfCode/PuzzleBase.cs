@@ -8,7 +8,7 @@ namespace AdventOfCode
 {
     public abstract class PuzzleBase<T>
     {
-        private readonly ITestOutputHelper _outputHelper;
+        protected readonly ITestOutputHelper OutputHelper;
 
         public PuzzleBase(int day, int year, string sampleProblemSolutionOne, string sampleProblemSolutionTwo, ITestOutputHelper outputHelper)
         {
@@ -16,7 +16,7 @@ namespace AdventOfCode
             this.Year = year;
             this.SampleProblemSolutionOne = sampleProblemSolutionOne;
             this.SampleProblemSolutionTwo = sampleProblemSolutionTwo;
-            _outputHelper = outputHelper;
+            OutputHelper = outputHelper;
         }
 
         public int Day { get; }
@@ -50,7 +50,7 @@ namespace AdventOfCode
                 Assert.Equal(SampleProblemSolutionOne, solution);
             }
 
-            _outputHelper.WriteLine($"The solution is: {solution}");
+            OutputHelper.WriteLine($"The solution is: {solution}");
         }
 
         [Theory]
@@ -68,7 +68,7 @@ namespace AdventOfCode
                 Assert.Equal(SampleProblemSolutionTwo, solution);
             }
 
-            _outputHelper.WriteLine($"The solution is: {solution}");
+            OutputHelper.WriteLine($"The solution is: {solution}");
         }
 
         public abstract string SolveProblem1(T input);
