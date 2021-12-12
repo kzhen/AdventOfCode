@@ -53,8 +53,6 @@ namespace AdventOfCode._2021
                 var visited = new LinkedList<Node>();
                 visited.AddFirst(startingNode);
                 dfs(input, visited);
-                distinctPaths += paths;
-
                 //LinkedList<>
                 //var paths = dfs()
             }
@@ -70,16 +68,19 @@ namespace AdventOfCode._2021
             foreach (var node in neighbours)
             {
                 var hasBeenVisited = visited.Any(n => n == node && node.IsSmall);
+                var visits = visited.Count(n => n == node);
 
-                if (hasBeenVisited)
+                if (hasBeenVisited && visits == 2)
                 {
+                    OutputHelper.WriteLine(visits.ToString());
                     continue;
                 }
 
                 if (node.IsEnd)
                 {
-                    //visited.AddLast(node);
-                    OutputHelper.WriteLine("path...");
+                    visited.AddLast(node);
+                    printPath(visited);
+                    visited.RemoveLast();
                     continue;
                 }
 
@@ -89,6 +90,16 @@ namespace AdventOfCode._2021
             }
 
             
+        }
+        private void printPath(LinkedList<Node> visited)
+        {
+            StringBuilder cb = new StringBuilder();
+            foreach (var node in visited)
+            {
+                cb.Append(node.name + " ");
+
+            }
+            Console.WriteLine(cb.ToString());
         }
 
         private LinkedList<Node> GetNeighbours(List<GraphVector> vectors, Node node)
@@ -111,48 +122,11 @@ namespace AdventOfCode._2021
             return neighbours;
         }
 
-        private void dfs(TBC input, LinkedList<Node> visited, LinkedList<Node> visitedTwice)
-        {
-            var neighbours = GetNeighbours(input.Vectors, visited.Last());
-
-            foreach (var node in neighbours)
-            {
-                var hasBeenVisited = visited.Any(n => n == node && node.IsSmall);
-                var hasBeenVisitedTwice = visitedTwice.Any(n => n == node && node.IsSmall);
-
-
-                if (hasBeenVisited && hasBeenVisitedTwice)
-                {
-                    continue;
-                }
-
-                if (node.IsEnd)
-                {
-                    //visited.AddLast(node);
-                    OutputHelper.WriteLine("path...");
-                    continue;
-                }
-
-                visited.AddLast(node);
-                dfs(input, visited, visitedTwice);
-                visited.RemoveLast();
-            }
-        }
+        
 
         public override string SolveProblem2(TBC input)
         {
             int distinctPaths = 0;
-
-            foreach (var startingNode in input.Nodes.Where(n => n.IsStart))
-            {
-                var visitedOnce = new LinkedList<Node>();
-                var visitedTwice = new LinkedList<Node>();
-                visitedOnce.AddFirst(startingNode);
-                dfs(input, visitedOnce, visitedTwice);
-
-                //LinkedList<>
-                //var paths = dfs()
-            }
 
 
             return distinctPaths.ToString();
