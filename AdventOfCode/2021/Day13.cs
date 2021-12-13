@@ -18,10 +18,7 @@ namespace AdventOfCode._2021
             var positions = input.TakeWhile(i => !string.IsNullOrWhiteSpace(i)).Select(m => m.Split(",")).Select(m => new Position(int.Parse(m[0]), int.Parse(m[1])));
             var instructinos = input.SkipWhile(i => !string.IsNullOrWhiteSpace(i)).Skip(1).Select(m => m);
 
-            //return (positions, new List<string>());
             return new TBC(positions, instructinos);
-
-            //return input.Select(int.Parse);
         }
 
         public override string SolveProblem1(TBC input)
