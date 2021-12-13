@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace AdventOfCode.Helpers
 {
@@ -30,45 +31,51 @@ namespace AdventOfCode.Helpers
             return runningValue;
         }
 
-        public static void PrintGrid(this Dictionary<Position, int> grid, string blankOrZeroChar = "-0-")
+        public static void PrintGrid(this Dictionary<Position, int> grid, ITestOutputHelper outputHelper, string blankOrZeroChar = "-0-")
         {
-
-            for (int i = 0; i < 10; i++)
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < 10; j++)
             {
-                for (int j = 0; j < 10; j++)
+                sb.Clear();
+                for (int i = 0; i < 10; i++)
                 {
                     var pos = grid.TryGetValue(new Position(i, j), out int valAtPos);
                     if (valAtPos > 0)
                     {
-                        Console.Write(valAtPos.ToString());
+                        sb.Append(valAtPos.ToString());
                     }
-                    Console.Write(blankOrZeroChar);
+                    else
+                    {
+                        sb.Append(blankOrZeroChar);
+                    }
                 }
-                Console.WriteLine();
+                outputHelper.WriteLine(sb.ToString());
             }
         }
 
-        public static void PrintGrid(this IEnumerable<Position> grid, string blankOrZeroChar = ".")
+        public static void PrintGrid(this IEnumerable<Position> grid, ITestOutputHelper outputHelper, string blankOrZeroChar = ".")
         {
             var maxX = grid.Select(xy => xy.x).Max();
             var maxY = grid.Select(xy => xy.y).Max();
 
-            for (int i = 0; i <= maxX; i++)
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j <= maxY; j++)
             {
-                for (int j = 0; j <= maxY; j++)
+                sb.Clear();
+                for (int i = 0; i <= maxX; i++)
                 {
                     var pos = grid.FirstOrDefault(xy => xy.x == i && xy.y == j);
                     if (pos != null)
                     {
-                        Console.Write("#");
+                        sb.Append("#");
                     }
                     else
                     {
-                        Console.Write(blankOrZeroChar);
+                        sb.Append(blankOrZeroChar);
 
                     }
                 }
-                Console.WriteLine();
+                outputHelper.WriteLine(sb.ToString());
             }
         }
 

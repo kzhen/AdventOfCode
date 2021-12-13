@@ -11,7 +11,7 @@ namespace AdventOfCode._2021
 {
     public class Day13 : PuzzleBase<TBC>
     {
-        public Day13(ITestOutputHelper outputHelper) : base(13, 2021, "17", "", outputHelper) { }
+        public Day13(ITestOutputHelper outputHelper) : base(13, 2021, "17", "see test output", outputHelper) { }
 
         public override TBC ParseInput(IEnumerable<string> input)
         {
@@ -28,10 +28,10 @@ namespace AdventOfCode._2021
         {
             var result = Fold(input.Item1, input.Item2, 1);
 
-            return result.ToString();
+            return result.Distinct().Count().ToString();
         }
 
-        private int Fold(IEnumerable<Position> grid, IEnumerable<string> instructions, int folds)
+        private List<Position> Fold(IEnumerable<Position> grid, IEnumerable<string> instructions, int folds)
         {
             var outerGrid = new List<Position>();
             outerGrid.AddRange(grid);
@@ -79,16 +79,16 @@ namespace AdventOfCode._2021
                 outerGrid = newGrid;
             }
 
-            return outerGrid.Distinct().Count();
+            return outerGrid;
         }
 
         public override string SolveProblem2(TBC input)
         {
             var result = Fold(input.Item1, input.Item2, input.Item2.Count());
 
-            //print the grid
+            result.PrintGrid(OutputHelper, " ");
 
-            return result.ToString();
+            return "see test output";
         }
     }
 }

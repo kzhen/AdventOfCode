@@ -309,7 +309,7 @@ namespace AdventOfCode._2021
 
             var sum = grid.Where(kvp => kvp.Value > 1).Count();
 
-            grid.PrintGrid(".");
+            grid.PrintGrid(OutputHelper, ".");
 
             return sum.ToString();
         }
