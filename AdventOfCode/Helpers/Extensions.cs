@@ -47,5 +47,30 @@ namespace AdventOfCode.Helpers
                 Console.WriteLine();
             }
         }
+
+        public static void PrintGrid(this IEnumerable<Position> grid, string blankOrZeroChar = ".")
+        {
+            var maxX = grid.Select(xy => xy.x).Max();
+            var maxY = grid.Select(xy => xy.y).Max();
+
+            for (int i = 0; i <= maxX; i++)
+            {
+                for (int j = 0; j <= maxY; j++)
+                {
+                    var pos = grid.FirstOrDefault(xy => xy.x == i && xy.y == j);
+                    if (pos != null)
+                    {
+                        Console.Write("#");
+                    }
+                    else
+                    {
+                        Console.Write(blankOrZeroChar);
+
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+
     }
 }

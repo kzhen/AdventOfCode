@@ -33,11 +33,14 @@ namespace AdventOfCode._2021
 
         private int Fold(IEnumerable<Position> grid, IEnumerable<string> instructions, int folds)
         {
-            List<Position> newGrid = new List<Position>();
+            var outerGrid = new List<Position>();
+            outerGrid.AddRange(grid);
             for (int i = 0; i < folds; i++)
             {
-                var maxY = grid.Select(x => x.y).Max();
-                var maxX = grid.Select(x => x.x).Max();
+                List<Position> newGrid = new List<Position>();
+
+                var maxY = outerGrid.Select(x => x.y).Max();
+                var maxX = outerGrid.Select(x => x.x).Max();
 
                 var foldInstruction = instructions.Skip(i).First();
 
@@ -47,10 +50,10 @@ namespace AdventOfCode._2021
 
                 if (axis.Equals("y"))
                 {
-                    var toAdd = grid.Where(xy => xy.y < rowOrColumn);
+                    var toAdd = outerGrid.Where(xy => xy.y < rowOrColumn);
                     newGrid.AddRange(toAdd);
 
-                    var toTransform = grid.Where(xy => xy.y > rowOrColumn);
+                    var toTransform = outerGrid.Where(xy => xy.y > rowOrColumn);
                     foreach (var item in toTransform)
                     {
                         var newY = maxY-item.y;
@@ -61,10 +64,10 @@ namespace AdventOfCode._2021
 
                 if (axis.Equals("x"))
                 {
-                    var toAdd = grid.Where(xy => xy.x < rowOrColumn);
+                    var toAdd = outerGrid.Where(xy => xy.x < rowOrColumn);
                     newGrid.AddRange(toAdd);
 
-                    var toTransform = grid.Where(xy => xy.x > rowOrColumn);
+                    var toTransform = outerGrid.Where(xy => xy.x > rowOrColumn);
                     foreach (var item in toTransform)
                     {
                         var newX = maxX-item.x;
@@ -72,9 +75,11 @@ namespace AdventOfCode._2021
                         newGrid.Add(newPosition);
                     }
                 }
+
+                outerGrid = newGrid;
             }
 
-            return newGrid.Distinct().Count();
+            return outerGrid.Distinct().Count();
         }
 
         public override string SolveProblem2(TBC input)
